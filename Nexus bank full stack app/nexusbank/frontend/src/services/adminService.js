@@ -1,0 +1,22 @@
+import api from './api';
+
+export const getAllCustomers = () => api.get('/api/admin/customers');
+export const getCustomerById = (id) => api.get(`/api/admin/customers/${id}`);
+export const activateCustomer = (id) => api.put(`/api/admin/customers/${id}/activate`);
+export const deactivateCustomer = (id) => api.put(`/api/admin/customers/${id}/deactivate`);
+export const getAllAccounts = () => api.get('/api/admin/accounts');
+export const getAccountsByCustomer = (id) => api.get(`/api/admin/accounts/customer/${id}`);
+export const getAccountByNumber = (number) => api.get(`/api/admin/accounts/${number}`);
+export const approveAccount = (num) => api.put(`/api/admin/accounts/${num}/approve`);
+export const rejectAccount = (num) => api.put(`/api/admin/accounts/${num}/reject`);
+export const freezeAccount = (num) => api.put(`/api/admin/accounts/${num}/freeze`);
+export const unfreezeAccount = (num) => api.put(`/api/admin/accounts/${num}/unfreeze`);
+export const getAllLoans = () => api.get('/api/admin/loans');
+export const getPendingLoans = () => api.get('/api/admin/loans/pending');
+export const getLoansByCustomer = (id) => api.get(`/api/admin/loans/customer/${id}`);
+export const getLoansByAccount = (number) => api.get(`/api/admin/loans/account/${number}`);
+export const approveLoan = (id) => api.put(`/api/admin/loans/${id}/approve`);
+export const rejectLoan = (id) => api.put(`/api/admin/loans/${id}/reject`);
+export const getAllTransactions = () => api.get('/api/admin/transactions');
+export const getTransactionsByAccount = (number) => api.get(`/api/admin/transactions/account/${number}`);
+export const getDashboard = () => api.get('/api/admin/dashboard');

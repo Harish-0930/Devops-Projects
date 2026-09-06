@@ -1,0 +1,96 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REGISTRY = 'your-registry.com'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Services') {
+            parallel {
+                stage('Eureka Server') {
+                    steps {
+                        dir('infrastructure/eureka-server') {
+                            sh 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+                stage('Config Server') {
+                    steps {
+                        dir('infrastructure/config-server') {
+                            sh 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+                stage('API Gateway') {
+                    steps {
+                        dir('infrastructure/api-gateway') {
+                            sh 'mvn clean package -DskipTests'
+                        }
+                    }
+                }
+                stage('Customer Service') {
+                    steps {
+                        dir('customer-service') {
+                            sh 'mvn clean package'
+                        }
+                    }
+                }
+                stage('Admin Service') {
+                    steps {
+                        dir('admin-service') {
+                            sh 'mvn clean package'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    def services = [
+                        'infrastructure/eureka-server': 'eureka-server',
+                        'infrastructure/config-server': 'config-server',
+                        'infrastructure/api-gateway': 'api-gateway',
+                        'customer-service': 'customer-service',
+                        'admin-service': 'admin-service'
+                    ]
+
+                    services.each { path, name ->
+                        dir(path) {
+                            sh "docker build -t ${DOCKER_REGISTRY}/nexusbank/${name}:${IMAGE_TAG} ."
+                            sh "docker push ${DOCKER_REGISTRY}/nexusbank/${name}:${IMAGE_TAG}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f devops/k8s/'
+                sh 'kubectl set image deployment/customer-service customer-service=${DOCKER_REGISTRY}/nexusbank/customer-service:${IMAGE_TAG} -n nexusbank'
+                sh 'kubectl set image deployment/admin-service admin-service=${DOCKER_REGISTRY}/nexusbank/admin-service:${IMAGE_TAG} -n nexusbank'
+            }
+        }
+    }
+
+    post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+        }
+        failure {
+            mail to: 'team@nexusbank.com',
+                 subject: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
+                 body: "Check console output at ${env.BUILD_URL}"
+        }
+    }
+}

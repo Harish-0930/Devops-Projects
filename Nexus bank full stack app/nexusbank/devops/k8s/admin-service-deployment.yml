@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-service
+  namespace: nexusbank
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: admin-service
+  template:
+    metadata:
+      labels:
+        app: admin-service
+    spec:
+      containers:
+        - name: admin-service
+          image: nexusbank/admin-service:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: nexusbank-config
+                  key: EUREKA_URL
+            - name: SPRING_CLOUD_CONFIG_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: nexusbank-config
+                  key: CONFIG_SERVER_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-service
+  namespace: nexusbank
+spec:
+  selector:
+    app: admin-service
+  ports:
+    - port: 8082
+      targetPort: 8082
+  type: ClusterIP

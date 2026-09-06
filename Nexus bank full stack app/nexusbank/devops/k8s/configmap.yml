@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nexusbank-config
+  namespace: nexusbank
+data:
+  EUREKA_URL: "http://eureka-server:8761/eureka"
+  CONFIG_SERVER_URL: "http://config-server:8888"
+  JWT_SECRET: "my-very-secret-jwt-key-for-nexusbank-2024-secure-application"
