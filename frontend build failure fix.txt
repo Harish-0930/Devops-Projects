@@ -1,0 +1,29 @@
+ Yes — that confirms the frontend project and Dockerfile are working correctly. The issue is local to Docker Desktop / Windows on this laptop, not your application.
+
+The `grpc server closed unexpectedly` error happens inside Docker Desktop’s BuildKit service before the frontend build even starts. Since the same build succeeds on fresh Ubuntu, check these local items:
+
+- Restart Docker Desktop completely; ensure its engine is running.
+- Update Docker Desktop to the latest stable version.
+- In Docker Desktop → Settings → Resources, allocate at least 4 CPUs and 6–8 GB RAM.
+- Ensure adequate free disk space, ideally 15+ GB.
+- Run:
+
+```powershell
+docker builder prune -af
+docker system prune -af
+```
+
+This removes Docker’s build cache and unused images/containers. It will require downloading build layers again.
+
+- Then rebuild:
+
+```powershell
+cd D:\project\nexusbank-customer-service-fix2\nexusbank\devops\docker
+docker-compose build --no-cache frontend
+```
+
+Also check Docker Desktop’s WSL integration is enabled for your Ubuntu distribution. The successful AWS build shows there is no frontend code fix required.
+
+
+    echo "export JAVA_HOME=$JAVA_HOME_PATH" >> ~/.bashrc
+    echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
