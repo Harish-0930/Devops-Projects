@@ -1,5 +1,6 @@
 services:
   eureka-server:
+    image: nexusbank/eureka-server:${IMAGE_TAG:-dev}
     build:
       context: ../../infrastructure/eureka-server
       dockerfile: Dockerfile
@@ -19,6 +20,7 @@ services:
       start_period: 60s
 
   config-server:
+    image: nexusbank/config-server:${IMAGE_TAG:-dev}
     build:
       context: ../../infrastructure/config-server
       dockerfile: Dockerfile
@@ -40,6 +42,7 @@ services:
       start_period: 60s
 
   api-gateway:
+    image: nexusbank/api-gateway:${IMAGE_TAG:-dev}
     build:
       context: ../../infrastructure/api-gateway
       dockerfile: Dockerfile
@@ -73,6 +76,7 @@ services:
       - nexusbank-network
 
   customer-service:
+    image: nexusbank/customer-service:${IMAGE_TAG:-dev}
     build:
       context: ../../customer-service
       dockerfile: Dockerfile
@@ -94,6 +98,7 @@ services:
       - nexusbank-network
 
   admin-service:
+    image: nexusbank/admin-service:${IMAGE_TAG:-dev}
     build:
       context: ../../admin-service
       dockerfile: Dockerfile
@@ -115,6 +120,7 @@ services:
       - nexusbank-network
 
   frontend:
+    image: nexusbank/frontend:${IMAGE_TAG:-dev}
     build:
       context: ../../frontend
       dockerfile: Dockerfile
