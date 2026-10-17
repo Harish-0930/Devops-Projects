@@ -89,7 +89,7 @@ services:
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://admin:admin123@eureka-server:8761/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://10.0.21.130:3306/nexusbank_customer?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/nexusbank_customer?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=nexususer
       - SPRING_DATASOURCE_PASSWORD=nexuspass
     networks:
@@ -111,7 +111,7 @@ services:
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://admin:admin123@eureka-server:8761/eureka/
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
-      - SPRING_DATASOURCE_URL=jdbc:mysql://10.0.21.130:3306/nexusbank_admin?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/nexusbank_admin?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=nexususer
       - SPRING_DATASOURCE_PASSWORD=nexuspass
     networks:
@@ -124,7 +124,8 @@ services:
       dockerfile: Dockerfile
     container_name: nexusbank-frontend
     ports:
-      - "3000:80"
+      # - "3000:80" #change port number to 3000:80 when deploying in localhost and 80:80 when deploying in production
+      - "80:80"
     depends_on:
       - api-gateway
     networks:

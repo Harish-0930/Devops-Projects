@@ -86,7 +86,7 @@ services:
       - mysql
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://admin:${EUREKA_PASSWORD}@eureka-server:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:mysql://10.0.21.130:3306/nexusbank_admin?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/nexusbank_admin?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=nexususer
       - SPRING_DATASOURCE_PASSWORD=nexuspass
     networks:
