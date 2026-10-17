@@ -3,7 +3,10 @@
 > **Purpose:** Repeatable deployment reference for the NexusBank application using a public frontend EC2 instance, a private backend/database EC2 instance, an internet-facing Application Load Balancer (ALB), and an internal ALB.
 >
 > **Important:** The CIDRs and resource names below are a reusable reference design, not a claim that every value matches the live AWS account. Confirm the actual VPC, subnet, route table, security group, ALB, and target group values in AWS before applying changes. Replace placeholders such as `<INTERNET_ALB_DNS>` and `<INTERNAL_ALB_DNS>`.
+## AWS Architecture Diagram
 
+![NexusBank AWS Architecture Diagram](https://raw.githubusercontent.com/Harish-0930/Devops-Projects/Main/Nexus%20bank%20full%20stack%20app/NexusBank%20AWS%20Architecture%20Diagram.png)
+---
 ## 1. Architecture overview
 
 - **Public entry point:** Users access the application through the internet-facing ALB DNS name.
