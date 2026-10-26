@@ -59,7 +59,7 @@ sudo systemctl start docker
 
 # Add current user to docker group
 sudo usermod -aG docker "$USER"
-
+newgrp docker
 echo "======================================"
 echo " Versions"
 echo "======================================"
